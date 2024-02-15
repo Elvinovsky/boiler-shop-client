@@ -1,0 +1,32 @@
+.spinner {
+  position: absolute;
+  display: block;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 4px solid transparent;
+  border-top-color: rgb(243, 243, 243); /* Синий цвет верхней границы круга */
+  animation: spin 1s ease-in-out infinite;
+  -webkit-animation: spin 2s ease-in-out infinite;
+  opacity: 80%; /* Прозрачность */
+
+  @keyframes spin {
+    0% {
+      transform: translate(-50%, -50%) rotate(0deg);
+    }
+    100% {
+      transform: translate(-50%, -50%) rotate(360deg);
+    }
+  }
+
+
+  box-shadow: 1px 1px 4px rgb(6, 65, 138); /* Тень */
+
+
+  &.dark_mode {
+    border-top-color: #000080; /* Темно-синий цвет верхней границы круга */
+  }
+}
