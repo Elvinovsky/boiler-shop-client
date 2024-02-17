@@ -3,10 +3,13 @@ import { useForm } from 'react-hook-form'
 import { IInputs } from '@/types/auth'
 import PasswordInput from '@/components/elements/AuthPage/PasswordInput'
 import { signInFx } from '@/app/api/auth'
-import { toast } from 'react-toastify'
 import { useState } from 'react'
+import { showAuthExport } from '@/utils/errors'
 import styles from '@/styles/auth/index.module.scss'
 import spinnerStyles from '@/styles/spinner/index.module.scss'
+import { useStore } from 'effector-react'
+import { $mode } from '@/context/mode'
+import { useRouter } from 'next/router'
 
 const SignInForm = () => {
   const [spinner, setSpinner] = useState(false)
@@ -17,9 +20,13 @@ const SignInForm = () => {
     reset,
   } = useForm<IInputs>()
 
+  const mode = useStore($mode)
+  const darkModeClass = mode === 'dark' ? `${styles.dark_mode}` : ''
+  const route = useRouter()
   const onSubmit = async (data: IInputs) => {
     try {
       setSpinner(true)
+
       await signInFx({
         url: '/users/login',
         username: data.name,
@@ -27,20 +34,26 @@ const SignInForm = () => {
       })
 
       reset()
+      route.push('/dashboard')
     } catch (err) {
-      toast.error((err as Error).message)
+      showAuthExport(err)
     } finally {
       setSpinner(false)
     }
   }
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-      <h2 className={`${styles.form_title} ${styles.title}`}>Войти на сайт</h2>
+    <form
+      className={`${styles.form} ${darkModeClass}`}
+      onSubmit={handleSubmit(onSubmit)}
+    >
+      <h2 className={`${styles.form_title} ${styles.title} ${darkModeClass}`}>
+        Войти на сайт
+      </h2>
       <NameInput register={register} errors={errors} />
       <PasswordInput register={register} errors={errors} />
       <button
-        className={`${styles.form__button} ${styles.button} ${styles.submit}`}
+        className={`${styles.form__button} ${styles.button} ${styles.submit} ${darkModeClass}`}
       >
         {spinner ? <div className={spinnerStyles.spinner} /> : 'SIGN IN'}
       </button>
