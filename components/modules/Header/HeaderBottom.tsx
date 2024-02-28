@@ -1,13 +1,15 @@
 import { useStore } from 'effector-react'
-import { $mode } from '@/context/mode'
-import styles from '@/styles/header/index.module.scss'
 import Link from 'next/link'
+import { $mode } from '@/context/mode'
 import SearchSvg from '@/components/elements/SearchSvg/SearchSvg'
 import SearchInput from '@/components/elements/Header/SearchInput'
 import ModeToggler from '@/components/elements/ModeToggler/ModeToggler'
 import CartPopup from '@/components/modules/Header/CartPopup/CartPopup'
+import styles from '@/styles/header/index.module.scss'
+import { useMediaQuery } from '@/hooks/useMediaQuery'
 
 const HeaderBottom = () => {
+  const isMedia950 = useMediaQuery(950)
   const mode = useStore($mode)
   const darkModeClass = mode === 'dark' ? `${styles.dark_mode}` : ''
   return (
@@ -27,14 +29,14 @@ const HeaderBottom = () => {
         </h1>
         <div className={styles.header__search}>
           <SearchInput />
-          <button>
-            <span>
+          <button className={styles.header__search__btn}>
+            <span className={styles.header__search__btn__span}>
               <SearchSvg />
             </span>
           </button>
         </div>
-        <div className="">
-          <ModeToggler />
+        <div className={styles.header__shopping_cart}>
+          {!isMedia950 && <ModeToggler />}
           <CartPopup />
         </div>
       </div>

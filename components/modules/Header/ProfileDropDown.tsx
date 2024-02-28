@@ -7,11 +7,22 @@ import { $mode } from '@/context/mode'
 import LogoutSvg from '@/components/elements/LogoutSvg/LogoutSvg'
 import { withClickOutside } from '@/utils/withClickOutside'
 import styles from '@/styles/profileDropDown/index.module.scss'
+import { $user } from '@/context/user'
+import { logoutFx } from '@/app/api/auth'
+import { useRouter } from 'next/router'
 
 const ProfileDropDown = forwardRef<HTMLDivElement, IWrappedComponentProps>(
   ({ open, setOpen }, ref) => {
     const mode = useStore($mode)
+    const user = useStore($user)
+    const router = useRouter()
+
+    const handleLogout = async () => {
+      await logoutFx('/users/logout')
+      await router.push('/')
+    }
     const darkModeClass = mode === 'dark' ? `${styles.dark_mode}` : ''
+
     const toggleProfileDown = () => setOpen(!open)
 
     return (
@@ -34,16 +45,19 @@ const ProfileDropDown = forwardRef<HTMLDivElement, IWrappedComponentProps>(
                 <span
                   className={`${styles.profile__dropdown__username} ${darkModeClass}`}
                 >
-                  user
+                  {user.username}
                 </span>
                 <span
                   className={`${styles.profile__dropdown__email} ${darkModeClass}`}
                 >
-                  user
+                  {user.email}
                 </span>
               </li>
               <li className={styles.profile__dropdown__item}>
-                <button className={styles.profile__dropdown__item__btn}>
+                <button
+                  className={styles.profile__dropdown__item__btn}
+                  onClick={handleLogout}
+                >
                   <span
                     className={`${styles.profile__dropdown__item__text} ${darkModeClass}`}
                   >

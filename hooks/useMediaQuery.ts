@@ -12,23 +12,16 @@ const useWindowWidth = () => {
     return () => window.removeEventListener('resize', handleResize, true)
   }, [])
 
-  return { windowWidth, handleResize }
+  return windowWidth.windowWidth // Возвращаем просто windowWidth, без объекта
 }
 
 export const useMediaQuery = (maxWidth: number) => {
-  const {
-    windowWidth: { windowWidth },
-    handleResize,
-  } = useWindowWidth()
+  const windowWidth = useWindowWidth() // Используем windowWidth напрямую
   const [isMedia, setIsMedia] = useState(false)
 
   useEffect(() => {
-    if (windowWidth <= maxWidth) {
-      setIsMedia(true)
-    } else {
-      setIsMedia(false)
-    }
-  }, [handleResize, maxWidth, windowWidth])
+    setIsMedia(windowWidth <= maxWidth)
+  }, [maxWidth, windowWidth])
 
   return isMedia
 }

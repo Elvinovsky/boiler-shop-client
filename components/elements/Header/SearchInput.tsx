@@ -16,6 +16,7 @@ const SearchInput = () => {
   const handleSearchOptionChange = (selectedOption: SelectOptionType) => {
     setSearchOption(selectedOption)
   }
+
   return (
     <Select
       placeholder="Я ищу..."
