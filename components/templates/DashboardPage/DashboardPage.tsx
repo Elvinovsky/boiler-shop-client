@@ -23,6 +23,13 @@ const DashboardPage = () => {
   const darkModeClass = mode === 'dark' ? `${styles.dark_mode}` : ''
 
   useEffect(() => {
+    if (!shoppingCart?.length) {
+      setShowAlert(false)
+      return
+    }
+    setShowAlert(true)
+  }, [shoppingCart])
+  useEffect(() => {
     const loadBoilerParts = async () => {
       try {
         setSpinner(true)
@@ -54,7 +61,7 @@ const DashboardPage = () => {
               exit={{ opacity: 0 }}
               className={`${styles.dashboard__alert} ${darkModeClass}`}
             >
-              <CartAlert count={shoppingCart?.length} closeAlert={closeAlert} />
+              <CartAlert closeAlert={closeAlert} />
             </motion.div>
           )}
         </AnimatePresence>

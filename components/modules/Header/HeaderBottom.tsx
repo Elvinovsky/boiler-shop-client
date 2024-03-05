@@ -5,13 +5,25 @@ import SearchSvg from '@/components/elements/SearchSvg/SearchSvg'
 import SearchInput from '@/components/elements/Header/SearchInput'
 import ModeToggler from '@/components/elements/ModeToggler/ModeToggler'
 import CartPopup from '@/components/modules/Header/CartPopup/CartPopup'
-import styles from '@/styles/header/index.module.scss'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
-
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
+import { setDisableCart } from '@/context/shopping-cart'
+import styles from '@/styles/header/index.module.scss'
 const HeaderBottom = () => {
   const isMedia950 = useMediaQuery(950)
   const mode = useStore($mode)
   const darkModeClass = mode === 'dark' ? `${styles.dark_mode}` : ''
+  const router = useRouter()
+
+  useEffect(() => {
+    if (router.pathname === '/order') {
+      setDisableCart(true)
+      return
+    }
+    setDisableCart(false)
+  }, [router.pathname])
+
   return (
     <div className={styles.header__bottom}>
       <div className={`container ${styles.header__bottom__container}`}>

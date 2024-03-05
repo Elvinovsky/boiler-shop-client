@@ -85,6 +85,8 @@
         list-style-type: none;
 
         &__item {
+          display: flex;
+          align-items: center;
           &:not(:last-child) {
             margin-bottom: 8px;
           }
@@ -94,7 +96,7 @@
 
             &:hover {
               color: #FFC540;
-              transition: color .2s ease-in-out;
+              transition: color .1s ease-in-out;
             }
           }
         }

@@ -25,9 +25,13 @@ import { IQueryParams } from '@/types/catalog'
 import { useRouter } from 'next/router'
 import { IBoilerParts } from '@/types/boilerparts'
 import CatalogFilters from '@/components/modules/CatalogPage/CatalogFilters'
+import { usePopup } from '@/hooks/usePopup'
+import { checkQueryParams } from '@/utils/catalog'
+import FilterSvg from '@/components/elements/FilterSvg/FilterSvg'
 
 const CatalogPage = ({ query }: { query: IQueryParams }) => {
   const mode = useStore($mode)
+  const darkModeClass = mode === 'dark' ? `${styles.dark_mode}` : ''
 
   const partsManufacturers = useStore($partsManufacturers)
 
@@ -37,11 +41,11 @@ const CatalogPage = ({ query }: { query: IQueryParams }) => {
 
   const filteredBoilerParts = useStore($filteredBoilerParts)
 
-  const darkModeClass = mode === 'dark' ? `${styles.dark_mode}` : ''
-
   const router = useRouter()
 
   const pagesCount = Math.ceil(+boilerParts.count / 20)
+
+  const { toggleOpen, open, closePopup } = usePopup()
 
   const isValidOffset =
     query.offset && !isNaN(+query.offset) && +query.offset > 0
@@ -130,18 +134,20 @@ const CatalogPage = ({ query }: { query: IQueryParams }) => {
         resetPagination(isFilterInQuery ? filteredBoilerParts : data)
         return
       }
+      const { isValidPriceQuery, isValidBoilerQuery, isValidPartsQuery } =
+        checkQueryParams(router)
 
       const result = await getBoilerPartsFx(
         `/boiler-parts?limit=20&offset=${selected}${
-          isFilterInQuery && router.query.boiler
+          isFilterInQuery && isValidBoilerQuery
             ? `&boiler=${router.query.boiler}`
             : ''
         }${
-          isFilterInQuery && router.query.parts
+          isFilterInQuery && isValidPartsQuery
             ? `&parts=${router.query.parts}`
             : ''
         }${
-          isFilterInQuery && router.query.priceFrom && router.query.priceTo
+          isFilterInQuery && isValidPriceQuery
             ? `&priceFrom=${router.query.priceFrom}&priceTo=${router.query.priceTo}`
             : ''
         }`
@@ -150,7 +156,7 @@ const CatalogPage = ({ query }: { query: IQueryParams }) => {
       await router.push(
         {
           query: {
-            ...query,
+            ...router.query,
             offset: selected + 1,
           },
         },
@@ -175,7 +181,6 @@ const CatalogPage = ({ query }: { query: IQueryParams }) => {
   const resetFilters = async () => {
     try {
       setSpinner(true)
-      setIsFilterInQuery(false)
       const data = await getBoilerPartsFx('/boiler-parts?limit=20&offset=0')
       const params = router.query
 
@@ -188,17 +193,13 @@ const CatalogPage = ({ query }: { query: IQueryParams }) => {
       await router.push({ query: { ...params } }, undefined, { shallow: true })
 
       setBoilerManufacturers(
-        boilerManufacturers.map((item) => ({
-          ...item,
-          checked: false,
-        }))
+        boilerManufacturers.map((item) => ({ ...item, checked: false }))
       )
+
       setPartsManufacturers(
-        partsManufacturers.map((item) => ({
-          ...item,
-          checked: false,
-        }))
+        partsManufacturers.map((item) => ({ ...item, checked: false }))
       )
+
       setBoilerParts(data)
       setPriceRange([1000, 9000])
       setIsPriceRangeChanged(false)
@@ -246,6 +247,17 @@ const CatalogPage = ({ query }: { query: IQueryParams }) => {
             ) : (
               <div />
             )}
+            <button
+              className={styles.catalog__top__mobile_btn}
+              onClick={toggleOpen}
+            >
+              <span className={styles.catalog__top__mobile_btn__svg}>
+                <FilterSvg />
+              </span>
+              <span className={styles.catalog__top__mobile_btn__text}>
+                Фильтр
+              </span>
+            </button>
             <FilterSelect setSpinner={setSpinner} />
           </div>
         </div>
@@ -260,6 +272,8 @@ const CatalogPage = ({ query }: { query: IQueryParams }) => {
               isPriceRangeChanged={isPriceRangeChanged}
               currentPage={currentPage}
               setIsFilterInQuery={setIsFilterInQuery}
+              closePopup={closePopup}
+              filtersMobileOpen={open}
             />
             {spinner ? (
               <ul className={skeletonStyles.skeleton}>

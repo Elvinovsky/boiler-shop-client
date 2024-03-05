@@ -17,6 +17,7 @@ export interface IQueryParams {
   part: string
   priceFrom: string
   priceTo: string
+  partId: string
 }
 
 export interface IFilterCheckboxItem {
@@ -33,31 +34,50 @@ export interface IFilterManufacturerAccordionProps {
   updateManufacturer: Event<IFilterCheckboxItem>
 }
 
-export interface ICatalogFiltersProps {
+interface ICatalogBaseTypes {
   priceRange: number[]
   setPriceRange: (arg0: number[]) => void
   setIsPriceRangeChanged: (arg0: boolean) => void
-  resetFilterBtnDisabled: boolean
-  resetFilters: VoidFunction
+}
+export interface ICatalogFiltersProps extends ICatalogBaseTypes {
   isPriceRangeChanged: boolean
   currentPage: number
   setIsFilterInQuery: (arg0: boolean) => void
-}
-
-export interface ICatalogFiltersDesktopProps {
-  priceRange: number[]
-  setPriceRange: (arg0: number[]) => void
-  setIsPriceRangeChanged: (arg0: boolean) => void
   resetFilterBtnDisabled: boolean
   resetFilters: VoidFunction
-  isPriceRangeChanged: boolean
-  currentPage: number
-  spinner: boolean
-  applyFilters: VoidFunction
+  closePopup: VoidFunction
+  filtersMobileOpen: boolean
 }
 
-export interface IPriceRangeProps {
-  priceRange: number[]
-  setPriceRange: (arg0: number[]) => void
-  setIsPriceRangeChanged: (arg0: boolean) => void
+export interface ICatalogFiltersDesktopProps extends ICatalogBaseTypes {
+  spinner: boolean
+  applyFilters: VoidFunction
+  resetFilterBtnDisabled: boolean
+  resetFilters: VoidFunction
 }
+
+export interface ICatalogFiltersMobileProps extends ICatalogBaseTypes {
+  spinner: boolean
+  applyFilters: VoidFunction
+  resetFilterBtnDisabled: boolean
+  resetFilters: VoidFunction
+  closePopup: VoidFunction
+  filtersMobileOpen: boolean
+}
+
+export interface IFiltersPopupTop {
+  resetBtnText: string
+  title: string
+  resetFilters: VoidFunction
+  resetFilterBtnDisabled: boolean
+  closePopup: VoidFunction
+}
+
+export interface IFiltersPopupProps extends IFilterManufacturerAccordionProps {
+  resetFilterBtnDisabled: boolean
+  resetAllManufacturers: VoidFunction
+  handleClosePopup: VoidFunction
+  applyFilters: VoidFunction
+  openPopup: boolean
+}
+export type IPriceRangeProps = ICatalogBaseTypes

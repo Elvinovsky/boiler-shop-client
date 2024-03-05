@@ -8,19 +8,21 @@ import CartHoverSvg from '@/components/elements/CartHoverSvg/CartHoverSvg'
 import { $shoppingCart } from '@/context/shopping-cart'
 import CartHoverCheckedSvg from '@/components/elements/CartHoverCheckedSvg/CartHoverCheckedSvg'
 import styles from '@/styles/catalog/index.module.scss'
-import skeletonStyles from '@/styles/skeleton/index.module.scss'
 import spinnerStyles from '@/styles/spinner/index.module.scss'
+import { toggleCartItem } from '@/utils/shoppingCart'
+import { $user } from '@/context/user'
 
 const CatalogItem = ({ item }: { item: IBoilerPart }) => {
   const mode = useStore($mode)
-
+  const user = useStore($user)
   const shoppingCart = useStore($shoppingCart)
-  const isInCart = shoppingCart.some((itemCart) => itemCart.id === item.id)
+  const isInCart = shoppingCart.some((itemCart) => itemCart.partId === item.id)
 
   const darkModeClass = mode === 'dark' ? `${styles.dark_mode}` : ''
-  const skeletonDarkMode = mode === 'dark' ? `${skeletonStyles.dark_mode}` : ''
 
   const [spinner, setSpinner] = useState(false)
+  const toggleToCart = () =>
+    toggleCartItem(user.username, item.id, isInCart, setSpinner)
 
   return (
     <li className={`${styles.catalog__list__item} ${darkModeClass}`}>
@@ -41,9 +43,10 @@ const CatalogItem = ({ item }: { item: IBoilerPart }) => {
           isInCart ? styles.added : ''
         }`}
         disabled={spinner}
+        onClick={toggleToCart}
       >
         {spinner ? (
-          <div className={spinnerStyles.spinner} style={{ top: 6, left: 6 }} />
+          <div className={spinnerStyles.spinner} />
         ) : (
           <span>{isInCart ? <CartHoverCheckedSvg /> : <CartHoverSvg />}</span>
         )}

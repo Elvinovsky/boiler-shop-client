@@ -68,6 +68,7 @@ const Footer = () => {
                 <Link href="/contacts" passHref legacyBehavior>
                   <a className={styles.footer__top__item__list__item__link}>
                     <span>Наш адрес:</span>
+
                     <span>г. Москва, ул. ... д....</span>
                     <span>
                       <MarkerSvg />

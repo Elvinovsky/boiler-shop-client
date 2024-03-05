@@ -1,58 +1,50 @@
 .cart {
   position: relative;
 
-  /* Стили для кнопки */
   &__btn {
-    position: relative; /* Позиционирование кнопки относительно своего родителя */
-    border: none; /* Удаление границы у кнопки */
-    background-color: transparent; /* Прозрачный фон кнопки */
-    display: flex; /* Отображение кнопки как flex-контейнера */
-    flex-direction: column; /* Ориентация дочерних элементов по вертикали */
-    align-items: center; /* Выравнивание дочерних элементов по центру по горизонтали */
-    margin: 0; /* Удаление внешних отступов */
-    padding: 0; /* Удаление внутренних отступов */
-    cursor: pointer; /* Установка курсора в виде указателя при наведении на кнопку */
+    position: relative;
+    border: none;
+    background-color: transparent;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
 
-    /* Стили для счетчика */
     &__count {
-      display: flex; /* Отображение счетчика как flex-контейнера */
-      align-items: center; /* Выравнивание счетчика по центру по горизонтали */
-      justify-content: center; /* Выравнивание счетчика по центру по вертикали */
-      width: 25px; /* Ширина счетчика */
-      height: 25px; /* Высота счетчика */
-      position: absolute; /* Абсолютное позиционирование счетчика */
-      color: #f2f2f2; /* Цвет текста счетчика */
-      border-radius: 50%; /* Закругление углов счетчика для создания круглой формы */
-      background-color: #E0595D; /* Цвет фона счетчика */
-      right: -2px; /* Положение счетчика справа от кнопки */
-      top: -12px; /* Положение счетчика сверху от кнопки */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 25px;
+      height: 25px;
+      position: absolute;
+      color: #f2f2f2;
+      border-radius: 50%;
+      background-color: #E0595D;
+      right: -2px;
+      top: -12px;
     }
   }
 
-
-  /* Стили для кнопки в темном режиме */
   &__btn.dark_mode &__svg svg {
     stroke: #f2f2f2;
   }
 
-  /* Стили для текста в темном режиме */
   &__btn.dark_mode &__text {
     color: #f2f2f2;
   }
 
-  /* Стили для кнопки в темном режиме при наведении */
   &__btn.dark_mode:hover &__svg svg {
     stroke: #FFC540;
     transition: stroke .2s ease-in-out;
   }
 
-  /* Стили для текста в темном режиме при наведении */
   &__btn.dark_mode:hover &__text {
     color: #FFC540;
     transition: color .2s ease-in-out;
   }
 
-  /* Стили для иконки корзины */
   &__svg {
     & svg {
       stroke: #1C629E;
@@ -60,67 +52,56 @@
     }
   }
 
-  /* Стили для текста */
   &__text {
     color: #1C629E;
     transition: color .2s ease-in-out;
   }
 
-  /* Стили для всплывающего окна корзины */
-  /* Стили для всплывающего окна корзины */
   &__popup {
-    display: grid; /* Отображение содержимого всплывающего окна как сетки */
-    grid-template-rows: auto min(250px) auto; /* Задание размеров строк в сетке: первая и последняя - автоматические высоты, вторая - минимальная высота 250px */
-    position: absolute; /* Абсолютное позиционирование всплывающего окна */
-    top: 45px; /* Расположение всплывающего окна сверху относительно родительского элемента на 45px */
-    left: -300px; /* Расположение всплывающего окна слева относительно родительского элемента на 300px (скрыто за пределами экрана) */
-    width: 304px; /* Ширина всплывающего окна */
-    padding: 15px; /* Внутренний отступ всплывающего окна */
-    background-color: #f2f2f2; /* Цвет фона всплывающего окна */
-    border-radius: 4px; /* Радиус скругления углов всплывающего окна */
-    transform-origin: right top; /* Определение точки трансформации при анимации */
-    z-index: 10; /* Установка позиции окна над другими элементами */
+    display: grid;
+    grid-template-rows: auto min(250px) auto;
+    position: absolute;
+    top: 45px;
+    left: -300px;
+    width: 304px;
+    padding: 15px;
+    background-color: #f2f2f2;
+    border-radius: 4px;
+    transform-origin: right top;
+    z-index: 10;
 
-
-
-  /* Стили для всплывающего окна корзины в темном режиме */
     &.dark_mode {
       background-color: #2d2d2d;
     }
 
-    /* Медиа запрос для адаптивного дизайна */
     @media (max-width: 450px) {
       left: -245px;
     }
 
 
-    /* Стили для заголовка во всплывающем окне корзины */
     &__title {
-      margin: 0; /* Удаление внешних отступов у заголовка */
-      color: #1C629E; /* Цвет текста заголовка */
-      font-size: 24px; /* Размер шрифта заголовка */
-      font-weight: 400; /* Нормальное начертание шрифта заголовка */
-      padding-left: 60px; /* Внутренний отступ слева у заголовка */
-      line-height: 44px; /* Высота строки заголовка */
-      background-image: url('/img/cart.svg'); /* Фоновое изображение для заголовка */
-      background-repeat: no-repeat; /* Запрет повторения фонового изображения */
-      background-position: left center; /* Расположение фонового изображения слева по центру заголовка */
-      margin-bottom: 12px; /* Внешний отступ снизу у заголовка */
+      margin: 0;
+      color: #1C629E;
+      font-size: 24px;
+      font-weight: 400;
+      padding-left: 60px;
+      line-height: 44px;
+      background-image: url('/img/cart.svg');
+      background-repeat: no-repeat;
+      background-position: left center;
+      margin-bottom: 12px;
     }
 
-    /* Стили для списка товаров в корзине */
     &__list {
-      margin: 0; /* Удаление внешних отступов у списка товаров */
-      padding: 0; /* Удаление внутренних отступов у списка товаров */
-      padding-right: 10px; /* Внутренний отступ справа у списка товаров */
-      height: 100%; /* Высота списка товаров (занимает все доступное пространство во всплывающем окне) */
-      overflow-y: auto; /* Включение вертикальной прокрутки при необходимости */
-      padding-top: 10px; /* Внутренний отступ сверху у списка товаров */
-      list-style-type: none; /* Удаление маркера списка у товаров */
-      border-top: 1px solid #E1E1E1; /* Верхняя граница списка товаров */
+      margin: 0;
+      padding: 0;
+      padding-right: 10px;
+      height: 100%;
+      overflow-y: auto;
+      padding-top: 10px;
+      list-style-type: none;
+      border-top: 1px solid #E1E1E1;
 
-
-    /* Стили для полосы прокрутки */
       &::-webkit-scrollbar {
         width: 8px;
       }
@@ -136,36 +117,30 @@
         border-radius: 5px;
       }
 
-      /* Стили для элемента списка */
       &__item {
         padding-bottom: 16px;
 
-        /* Стили для каждого элемента списка товаров, кроме последнего */
         &:not(:last-child) {
-          margin-bottom: 16px; /* Внешний отступ снизу у каждого элемента списка */
-          padding-bottom: 16px; /* Внутренний отступ снизу у каждого элемента списка */
-          border-bottom: 1px solid #e1e1e1; /* Горизонтальная граница снизу у каждого элемента списка */
+          margin-bottom: 16px;
+          padding-bottom: 16px;
+          border-bottom: 1px solid #e1e1e1;
         }
 
-
-        /* Стили для верхней части элемента списка */
         &__top {
           position: relative;
           display: flex;
           align-items: center;
           margin-bottom: 16px;
 
-          /* Стили для кнопки удаления товара */
           button {
-            position: absolute; /* Абсолютное позиционирование кнопки */
-            right: 0; /* Расположение кнопки справа от родительского элемента */
-            top: 0; /* Расположение кнопки сверху от родительского элемента */
-            cursor: pointer; /* Установка курсора в виде указателя при наведении на кнопку */
-            background-color: transparent; /* Прозрачный фон кнопки */
-            border: none; /* Удаление границы у кнопки */
-            margin: 0; /* Удаление внешних отступов у кнопки */
-            padding: 0; /* Удаление внутренних отступов у кнопки */
-
+            position: absolute;
+            right: 0;
+            top: 0;
+            cursor: pointer;
+            background-color: transparent;
+            border: none;
+            margin: 0;
+            padding: 0;
 
             & svg {
               fill: #E0595D;
@@ -177,14 +152,12 @@
           }
         }
 
-        /* Стили для нижней части элемента списка */
         &__bottom {
           display: flex;
           align-items: center;
           justify-content: space-between;
         }
 
-        /* Стили для изображения товара */
         &__img {
           width: 79px;
           height: 79px;
@@ -198,7 +171,6 @@
           }
         }
 
-        /* Стили для текста товара */
         &__text {
           font-size: 16px;
           line-height: 27px;
@@ -210,14 +182,12 @@
           }
         }
 
-        /* Стили для текста "Корзина пуста" */
         &__empty {
           font-size: 14px;
           color: #E0595D;
           opacity: 0.5;
         }
 
-        /* Стили для счетчика товара */
         &__counter {
           position: relative;
           padding: 4px;
@@ -262,7 +232,6 @@
           }
         }
 
-        /* Стили для цены товара */
         &__price {
           &.dark_mode {
             color: #f2f2f2;
@@ -271,7 +240,6 @@
       }
     }
 
-    /* Стили для пустого списка */
     &__empty {
       height: 100%;
       display: flex;
@@ -289,14 +257,12 @@
       }
     }
 
-    /* Стили для футера корзины */
     &__footer {
       border-top: 1px solid #E1E1E1;
       padding-top: 12px;
       display: flex;
       flex-direction: column;
 
-      /* Стили для общей суммы заказа */
       &__total {
         display: flex;
         align-items: center;
@@ -304,7 +270,6 @@
         margin-bottom: 32px;
       }
 
-      /* Стили для текста в футере */
       &__text {
         font-size: 18px;
         color: #2D2D2D;
@@ -314,14 +279,12 @@
         }
       }
 
-      /* Стили для цены в футере */
       &__price {
         font-size: 24px;
         color: #205684;
         white-space: nowrap
       }
 
-      /* Стили для кнопки в футере */
       &__btn {
         cursor: pointer;
         border: 1px solid transparent;
