@@ -21,3 +21,20 @@ export const getQueryParamOnFirstRender = (
 ) =>
   router.query[queryName] ||
   router.asPath.match(new RegExp(`[&?]${queryName}=(.*)(&|$)`))
+
+export const toggleClassNameForOverlayAndBody = (overlayClassName = 'open') => {
+  // Добавление/удаление класса 'open' для элемента с классом '.overlay'
+  document.querySelector('.overlay')?.classList.toggle(overlayClassName)
+
+  // Добавление/удаление классов для затемнения фона и блокировки прокрутки
+  document.querySelector('.body')?.classList.toggle('overflow-hidden')
+}
+
+export const removeClassNameForOverlayAndBody = () => {
+  // Добавление/удаление класса 'open' для элемента с классом '.overlay'
+  document.querySelector('.overlay')?.classList.remove('open')
+  document.querySelector('.overlay')?.classList.remove('open-search')
+
+  // Добавление/удаление классов для затемнения фона и блокировки прокрутки
+  document.querySelector('.body')?.classList.remove('overflow-hidden')
+}

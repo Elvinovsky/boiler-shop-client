@@ -1,7 +1,11 @@
 import { useEffect, useState } from 'react'
 import { useStore } from 'effector-react'
 import { $mode } from '@/context/mode'
-import { $shoppingCart, $totalPrice } from '@/context/shopping-cart'
+import {
+  $shoppingCart,
+  $totalPrice,
+  setShoppingCart,
+} from '@/context/shopping-cart'
 import styles from '@/styles/order/index.module.scss'
 import { formatPrice } from '@/utils/common'
 import OrderAccordion from '@/components/modules/OrderPage/OrderAccordion'
@@ -9,7 +13,7 @@ import { checkPaymentFx, makePaymentFx } from '@/app/api/ payment'
 import { toast } from 'react-toastify'
 import { useRouter } from 'next/router'
 import { removeFromCartFX } from '@/app/api/shoppingCart'
-import { $user } from '@/context/user'
+import { $user, $userCity } from '@/context/user'
 import spinnerStyles from '@/styles/spinner/index.module.scss'
 
 const OrderPage = () => {
@@ -19,23 +23,11 @@ const OrderPage = () => {
   const shoppingCart = useStore($shoppingCart)
   const totalPrice = useStore($totalPrice)
   const user = useStore($user)
+  const city = useStore($userCity)
   const mode = useStore($mode)
   const darkModeClass = mode === 'dark' ? `${styles.dark_mode}` : ''
   const spinner = useStore(makePaymentFx.pending)
   const router = useRouter()
-
-  const makePay = async () => {
-    try {
-      const data = await makePaymentFx({
-        url: `payment/`,
-        amount: totalPrice,
-      })
-      sessionStorage.setItem('paymentId', data?.id)
-      await router.push(data?.confirmation?.confirmation_url)
-    } catch (err) {
-      toast.error((err as Error).message)
-    }
-  }
 
   useEffect(() => {
     const paymentId = sessionStorage.getItem('paymentId')
@@ -44,6 +36,24 @@ const OrderPage = () => {
       checkPayment(paymentId)
     }
   }, [])
+
+  const makePay = async () => {
+    try {
+      const data = await makePaymentFx({
+        url: '/payment',
+        amount: totalPrice,
+        description: `Заказ №1 ${
+          city.city.length ? `Город: ${city.city}, улица: ${city.street}` : ''
+        }`,
+      })
+
+      sessionStorage.setItem('paymentId', data.id)
+      router.push(data.confirmation.confirmation_url)
+    } catch (error) {
+      toast.error((error as Error).message)
+    }
+  }
+
   const checkPayment = async (paymentId: string) => {
     try {
       const data = await checkPaymentFx(`/payment/${paymentId}`)
@@ -59,9 +69,11 @@ const OrderPage = () => {
       resetCart()
     }
   }
+
   const resetCart = async () => {
     sessionStorage.removeItem('paymentId')
     await removeFromCartFX(`/shopping-cart/all/${user.userId}`)
+    setShoppingCart([])
   }
 
   return (

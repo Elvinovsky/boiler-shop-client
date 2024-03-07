@@ -41,11 +41,6 @@ const HeaderBottom = () => {
         </h1>
         <div className={styles.header__search}>
           <SearchInput />
-          <button className={styles.header__search__btn}>
-            <span className={styles.header__search__btn__span}>
-              <SearchSvg />
-            </span>
-          </button>
         </div>
         <div className={styles.header__shopping_cart}>
           {!isMedia950 && <ModeToggler />}

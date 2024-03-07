@@ -26,3 +26,8 @@ export interface IAccordion {
 export interface ILayoutProps {
   children: React.ReactNode
 }
+
+export interface IGetGeolocationFx {
+  latitude: number
+  longitude: number
+}

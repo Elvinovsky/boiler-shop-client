@@ -1,4 +1,9 @@
 import { useEffect, useState } from 'react'
+import {
+  removeClassNameForOverlayAndBody,
+  toggleClassNameForOverlayAndBody,
+} from '@/utils/common'
+import { setSearchInputZIndex } from '@/context/header'
 
 // Создание кастомного хука для управления всплывающим окном
 export const usePopup = () => {
@@ -11,11 +16,7 @@ export const usePopup = () => {
     window.scrollTo(0, 0)
 
     // Добавление/удаление классов для затемнения фона и блокировки прокрутки
-    // Добавление/удаление класса 'open' для элемента с классом '.overlay'
-    document.querySelector('.overlay')?.classList.toggle('open')
-
-    // Добавление класса 'open' для элемента с классом '.body'
-    document.querySelector('.body')?.classList.add('open')
+    toggleClassNameForOverlayAndBody()
 
     // Инвертирование состояния открытия всплывающего окна
     setOpen(!open)
@@ -24,11 +25,11 @@ export const usePopup = () => {
   // Функция для явного закрытия всплывающего окна
   const closePopup = () => {
     // Удаление классов для затемнения фона и блокировки прокрутки
-    document.querySelector('.overlay')?.classList.remove('open')
-    document.querySelector('.body')?.classList.remove('open')
+    removeClassNameForOverlayAndBody()
 
     // Установка состояния открытия всплывающего окна в false
     setOpen(false)
+    setSearchInputZIndex(1)
   }
 
   // Эффект для добавления и удаления слушателя событий при изменении состояния открытия
