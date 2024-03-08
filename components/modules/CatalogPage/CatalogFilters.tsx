@@ -39,95 +39,103 @@ const CatalogFilters = ({
   const router = useRouter()
 
   useEffect(() => {
-    applyFiltersFromQuery()
-  }, [])
+    const applyFiltersFromQuery = async () => {
+      try {
+        const {
+          boilerQueryValue,
+          partsQueryValue,
+          priceFromQueryValue,
+          priceToQueryValue,
+          isValidPriceQuery,
+          isValidBoilerQuery,
+          isValidPartsQuery,
+        } = checkQueryParams(router)
 
-  const applyFiltersFromQuery = async () => {
-    try {
-      const {
-        boilerQueryValue,
-        partsQueryValue,
-        priceFromQueryValue,
-        priceToQueryValue,
-        isValidPriceQuery,
-        isValidBoilerQuery,
-        isValidPartsQuery,
-      } = checkQueryParams(router)
+        const boilerQuery = `&boiler=${getQueryParamOnFirstRender(
+          'boiler',
+          router
+        )}`
+        const partsQuery = `&parts=${getQueryParamOnFirstRender(
+          'parts',
+          router
+        )}`
+        const priceQuery = `&priceFrom=${priceFromQueryValue}&priceTo=${priceToQueryValue}`
 
-      const boilerQuery = `&boiler=${getQueryParamOnFirstRender(
-        'boiler',
-        router
-      )}`
-      const partsQuery = `&parts=${getQueryParamOnFirstRender('parts', router)}`
-      const priceQuery = `&priceFrom=${priceFromQueryValue}&priceTo=${priceToQueryValue}`
+        if (isValidBoilerQuery && isValidPartsQuery && isValidPriceQuery) {
+          await updateParamsAndFiltersFromQuery(() => {
+            setIsFilterInQuery(true)
+            setPriceRange([+priceFromQueryValue, +priceToQueryValue])
+            setIsPriceRangeChanged(true)
+            setBoilerManufacturersFromQuery(boilerQueryValue)
+            setPartsManufacturersFromQuery(partsQueryValue)
+          }, `${currentPage}${boilerQuery}${partsQuery}${priceQuery}`)
+          return
+        }
 
-      if (isValidBoilerQuery && isValidPartsQuery && isValidPriceQuery) {
-        await updateParamsAndFiltersFromQuery(() => {
-          setIsFilterInQuery(true)
-          setPriceRange([+priceFromQueryValue, +priceToQueryValue])
-          setIsPriceRangeChanged(true)
-          setBoilerManufacturersFromQuery(boilerQueryValue)
-          setPartsManufacturersFromQuery(partsQueryValue)
-        }, `${currentPage}${boilerQuery}${partsQuery}${priceQuery}`)
-        return
+        if (isValidBoilerQuery && isValidPartsQuery) {
+          await updateParamsAndFiltersFromQuery(() => {
+            setIsFilterInQuery(true)
+            setBoilerManufacturersFromQuery(boilerQueryValue)
+            setPartsManufacturersFromQuery(partsQueryValue)
+          }, `${currentPage}${boilerQuery}${partsQuery}`)
+        }
+
+        if (isValidPriceQuery) {
+          await updateParamsAndFiltersFromQuery(() => {
+            setIsFilterInQuery(true)
+            setIsPriceRangeChanged(true)
+            setPriceRange([+priceFromQueryValue, +priceToQueryValue])
+          }, `${currentPage}${priceQuery}`)
+        }
+
+        if (isValidBoilerQuery && isValidPriceQuery) {
+          await updateParamsAndFiltersFromQuery(() => {
+            setIsFilterInQuery(true)
+            setIsPriceRangeChanged(true)
+            setPriceRange([+priceFromQueryValue, +priceToQueryValue])
+            setBoilerManufacturersFromQuery(boilerQueryValue)
+          }, `${currentPage}${boilerQuery}${priceQuery}`)
+        }
+
+        if (isValidPartsQuery && isValidPriceQuery) {
+          await updateParamsAndFiltersFromQuery(() => {
+            setIsFilterInQuery(true)
+            setIsPriceRangeChanged(true)
+            setPriceRange([+priceFromQueryValue, +priceToQueryValue])
+            setPartsManufacturersFromQuery(partsQueryValue)
+          }, `${currentPage}${partsQuery}${priceQuery}`)
+        }
+
+        if (isValidBoilerQuery) {
+          await updateParamsAndFiltersFromQuery(() => {
+            setIsFilterInQuery(true)
+            setBoilerManufacturersFromQuery(boilerQueryValue)
+          }, `${currentPage}${boilerQuery}`)
+        }
+
+        if (isValidPartsQuery) {
+          await updateParamsAndFiltersFromQuery(() => {
+            setIsFilterInQuery(true)
+            setPartsManufacturersFromQuery(partsQueryValue)
+          }, `${currentPage}${partsQuery}`)
+        }
+      } catch (err) {
+        const error = (err as Error).message
+        if (error === 'URI malformed') {
+          toast.warning('Неправильный Url для фильтров')
+          return
+        }
+        toast.error(error)
       }
-
-      if (isValidBoilerQuery && isValidPartsQuery) {
-        await updateParamsAndFiltersFromQuery(() => {
-          setIsFilterInQuery(true)
-          setBoilerManufacturersFromQuery(boilerQueryValue)
-          setPartsManufacturersFromQuery(partsQueryValue)
-        }, `${currentPage}${boilerQuery}${partsQuery}`)
-      }
-
-      if (isValidPriceQuery) {
-        await updateParamsAndFiltersFromQuery(() => {
-          setIsFilterInQuery(true)
-          setIsPriceRangeChanged(true)
-          setPriceRange([+priceFromQueryValue, +priceToQueryValue])
-        }, `${currentPage}${priceQuery}`)
-      }
-
-      if (isValidBoilerQuery && isValidPriceQuery) {
-        await updateParamsAndFiltersFromQuery(() => {
-          setIsFilterInQuery(true)
-          setIsPriceRangeChanged(true)
-          setPriceRange([+priceFromQueryValue, +priceToQueryValue])
-          setBoilerManufacturersFromQuery(boilerQueryValue)
-        }, `${currentPage}${boilerQuery}${priceQuery}`)
-      }
-
-      if (isValidPartsQuery && isValidPriceQuery) {
-        await updateParamsAndFiltersFromQuery(() => {
-          setIsFilterInQuery(true)
-          setIsPriceRangeChanged(true)
-          setPriceRange([+priceFromQueryValue, +priceToQueryValue])
-          setPartsManufacturersFromQuery(partsQueryValue)
-        }, `${currentPage}${partsQuery}${priceQuery}`)
-      }
-
-      if (isValidBoilerQuery) {
-        await updateParamsAndFiltersFromQuery(() => {
-          setIsFilterInQuery(true)
-          setBoilerManufacturersFromQuery(boilerQueryValue)
-        }, `${currentPage}${boilerQuery}`)
-      }
-
-      if (isValidPartsQuery) {
-        await updateParamsAndFiltersFromQuery(() => {
-          setIsFilterInQuery(true)
-          setPartsManufacturersFromQuery(partsQueryValue)
-        }, `${currentPage}${partsQuery}`)
-      }
-    } catch (err) {
-      const error = (err as Error).message
-      if (error === 'URI malformed') {
-        toast.warning('Неправильный Url для фильтров')
-        return
-      }
-      toast.error(error)
     }
-  }
+    applyFiltersFromQuery()
+  }, [
+    currentPage,
+    router,
+    setIsFilterInQuery,
+    setIsPriceRangeChanged,
+    setPriceRange,
+  ])
 
   const applyFilters = async () => {
     setIsFilterInQuery(true)

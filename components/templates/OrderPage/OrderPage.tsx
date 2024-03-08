@@ -29,14 +29,6 @@ const OrderPage = () => {
   const spinner = useStore(makePaymentFx.pending)
   const router = useRouter()
 
-  useEffect(() => {
-    const paymentId = sessionStorage.getItem('paymentId')
-
-    if (paymentId) {
-      checkPayment(paymentId)
-    }
-  }, [])
-
   const makePay = async () => {
     try {
       const data = await makePaymentFx({
@@ -54,27 +46,35 @@ const OrderPage = () => {
     }
   }
 
-  const checkPayment = async (paymentId: string) => {
-    try {
-      const data = await checkPaymentFx(`/payment/${paymentId}`)
+  useEffect(() => {
+    const paymentId = sessionStorage.getItem('paymentId')
 
-      if (data.status === 'succeeded') {
-        resetCart()
-        return
-      }
-
+    const resetCart = async () => {
       sessionStorage.removeItem('paymentId')
-    } catch (error) {
-      console.log((error as Error).message)
-      resetCart()
+      await removeFromCartFX(`/shopping-cart/all/${user.userId}`)
+      setShoppingCart([])
     }
-  }
 
-  const resetCart = async () => {
-    sessionStorage.removeItem('paymentId')
-    await removeFromCartFX(`/shopping-cart/all/${user.userId}`)
-    setShoppingCart([])
-  }
+    const checkPayment = async (paymentId: string) => {
+      try {
+        const data = await checkPaymentFx(`/payment/${paymentId}`)
+
+        if (data.status === 'succeeded') {
+          resetCart()
+          return
+        }
+
+        sessionStorage.removeItem('paymentId')
+      } catch (error) {
+        console.log((error as Error).message)
+        resetCart()
+      }
+    }
+
+    if (paymentId) {
+      checkPayment(paymentId)
+    }
+  }, [user.userId])
 
   return (
     <section className={styles.order}>

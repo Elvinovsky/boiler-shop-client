@@ -29,9 +29,11 @@ const AboutPage = () => {
             </p>
           </div>
           <div className={`${styles.about__img} ${styles.about__img__top}`}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/img/about-img.png" alt="image-1" />
           </div>
           <div className={`${styles.about__img} ${styles.about__img__bottom}`}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/img/about-img-2.png" alt="image-2" />
           </div>
         </div>

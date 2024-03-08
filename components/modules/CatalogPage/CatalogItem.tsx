@@ -26,6 +26,7 @@ const CatalogItem = ({ item }: { item: IBoilerPart }) => {
 
   return (
     <li className={`${styles.catalog__list__item} ${darkModeClass}`}>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src={JSON.parse(item.images)[0]} alt={item.name} />
       <div className={styles.catalog__list__item__inner}>
         <Link href={`/catalog/${item.id}`} legacyBehavior passHref>

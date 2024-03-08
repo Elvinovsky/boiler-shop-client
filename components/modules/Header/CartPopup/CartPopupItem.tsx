@@ -20,6 +20,7 @@ const CartPopupItem = (item: IShoppingCartItemProps) => {
     <li className={styles.cart__popup__list__item}>
       <div className={styles.cart__popup__list__item__top}>
         <div className={styles.cart__popup__list__item__img}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={item.image} alt={item.name} />
         </div>
         <Link href={`/catalog/${item.partId}`} passHref legacyBehavior>

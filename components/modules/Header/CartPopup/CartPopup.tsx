@@ -35,8 +35,16 @@ const CartPopup = forwardRef<HTMLDivElement, IWrappedComponentProps>(
     const toggleCartDropDown = () => setOpen(!open)
 
     useEffect(() => {
+      const loadCartItems = async () => {
+        try {
+          const cartItems = await getCartItemFX(`/shopping-cart/${user.userId}`)
+          setShoppingCart(cartItems)
+        } catch (err) {
+          toast.error((err as Error).message)
+        }
+      }
       loadCartItems()
-    }, [])
+    }, [user.userId])
 
     useEffect(() => {
       setTotalPrice(
@@ -46,14 +54,6 @@ const CartPopup = forwardRef<HTMLDivElement, IWrappedComponentProps>(
         )
       )
     }, [shoppingCart])
-    const loadCartItems = async () => {
-      try {
-        const cartItems = await getCartItemFX(`/shopping-cart/${user.userId}`)
-        setShoppingCart(cartItems)
-      } catch (err) {
-        toast.error((err as Error).message)
-      }
-    }
 
     return (
       <div className={styles.cart} ref={ref}>

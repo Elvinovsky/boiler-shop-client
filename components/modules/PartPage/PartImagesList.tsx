@@ -23,6 +23,7 @@ const PartImagesList = () => {
       ) : (
         <>
           <div className={styles.part__images__main}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={currentImgSrc || images[0]} alt={boilerPart.name} />
           </div>
           <ul className={styles.part__images__list}>

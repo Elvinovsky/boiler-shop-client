@@ -52,6 +52,7 @@ const BrandsSlider = () => {
           key={el.id}
           style={{ width: isMedia768 ? 124 : 180 }}
         >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={el.img} alt={el.alt} />
         </div>
       ))}

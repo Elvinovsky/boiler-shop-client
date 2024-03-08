@@ -1,7 +1,6 @@
 import { useStore } from 'effector-react'
 import Link from 'next/link'
 import { $mode } from '@/context/mode'
-import SearchSvg from '@/components/elements/SearchSvg/SearchSvg'
 import SearchInput from '@/components/elements/Header/SearchInput'
 import ModeToggler from '@/components/elements/ModeToggler/ModeToggler'
 import CartPopup from '@/components/modules/Header/CartPopup/CartPopup'
@@ -30,6 +29,7 @@ const HeaderBottom = () => {
         <h1 className={styles.header__logo}>
           <Link href="/dashboard" legacyBehavior passHref>
             <a className={styles.header__logo__link}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/img/logo.svg" alt="logo" />
               <span
                 className={`${styles.header__logo__link__text} ${darkModeClass}`}

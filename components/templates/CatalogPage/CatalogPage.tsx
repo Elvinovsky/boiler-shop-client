@@ -85,14 +85,14 @@ const CatalogPage = ({ query }: { query: IQueryParams }) => {
         const data = await getBoilerPartsFx(`/boiler-parts?limit=20&offset=0`)
 
         if (!isValidOffset) {
-          router.replace({ query: { offset: 1 } })
+          await router.replace({ query: { offset: 1 } })
           resetPagination(data)
           return
         }
 
         if (isValidOffset) {
           if (+query.offset > Math.ceil(data.count / 20)) {
-            router.push({ query: { ...query, offset: 1 } }, undefined, {
+            await router.push({ query: { ...query, offset: 1 } }, undefined, {
               shallow: true,
             })
             resetPagination(isFilterInQuery ? filteredBoilerParts : data)
@@ -117,7 +117,7 @@ const CatalogPage = ({ query }: { query: IQueryParams }) => {
     }
 
     loadBoilerParts()
-  }, [filteredBoilerParts, isFilterInQuery])
+  }, [filteredBoilerParts, isFilterInQuery, isValidOffset, query, router])
 
   const handlePageChange = async ({ selected }: { selected: number }) => {
     try {

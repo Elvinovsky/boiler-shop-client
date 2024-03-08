@@ -19,21 +19,21 @@ function CatalogPartPage({ query }: { query: IQueryParams }) {
   const router = useRouter()
 
   useEffect(() => {
-    loadBoilerPart()
-  }, [router.asPath])
-  const loadBoilerPart = async () => {
-    try {
-      const data = await getBoilerPartFx(`/boiler-parts/find/${query.partId}`)
-      if (!data) {
-        setError(true)
+    const loadBoilerPart = async () => {
+      try {
+        const data = await getBoilerPartFx(`/boiler-parts/find/${query.partId}`)
+        if (!data) {
+          setError(true)
+          return
+        }
+        setBoilerPart(data)
         return
+      } catch (e) {
+        toast.error((e as Error).message)
       }
-      setBoilerPart(data)
-      return
-    } catch (e) {
-      toast.error((e as Error).message)
     }
-  }
+    loadBoilerPart()
+  }, [query.partId, router.asPath])
 
   return (
     <>

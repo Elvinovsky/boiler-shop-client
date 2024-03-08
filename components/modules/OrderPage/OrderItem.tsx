@@ -21,6 +21,7 @@ const OrderItem = (item: IShoppingCartItemProps) => {
       <div className={styles.order__cart__list__item__left}>
         <div className={styles.order__cart__list__item__left__inner}>
           <div className={styles.order__cart__list__item__img}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={item.image} alt={item.name} />
           </div>
           <Link href={`/catalog/${item.partId}`} passHref legacyBehavior>
