@@ -34,7 +34,7 @@ const SignInForm = () => {
       })
 
       reset()
-      route.push('/dashboard')
+      await route.push('/dashboard')
     } catch (err) {
       showAuthExport(err)
     } finally {
