@@ -68,7 +68,7 @@ const CityButton = () => {
             }}
           />
         ) : city.city.length ? (
-          city.city.match(/[a-zA-ZА-Яа-я]+$/)
+          city.city
         ) : (
           'Город'
         )}
