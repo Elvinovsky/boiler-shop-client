@@ -41,7 +41,7 @@ const DashboardSlider = ({
     infinite: true,
     variableWidth: true,
     autoplay: true,
-    speed: 2000,
+    speed: 500,
     arrows: false,
     slidesToScroll: isMedia768 ? 1 : 2,
   }

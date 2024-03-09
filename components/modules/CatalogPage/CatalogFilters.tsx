@@ -78,14 +78,7 @@ const CatalogFilters = ({
             setBoilerManufacturersFromQuery(boilerQueryValue)
             setPartsManufacturersFromQuery(partsQueryValue)
           }, `${currentPage}${boilerQuery}${partsQuery}`)
-        }
-
-        if (isValidPriceQuery) {
-          await updateParamsAndFiltersFromQuery(() => {
-            setIsFilterInQuery(true)
-            setIsPriceRangeChanged(true)
-            setPriceRange([+priceFromQueryValue, +priceToQueryValue])
-          }, `${currentPage}${priceQuery}`)
+          return
         }
 
         if (isValidBoilerQuery && isValidPriceQuery) {
@@ -95,6 +88,7 @@ const CatalogFilters = ({
             setPriceRange([+priceFromQueryValue, +priceToQueryValue])
             setBoilerManufacturersFromQuery(boilerQueryValue)
           }, `${currentPage}${boilerQuery}${priceQuery}`)
+          return
         }
 
         if (isValidPartsQuery && isValidPriceQuery) {
@@ -104,6 +98,16 @@ const CatalogFilters = ({
             setPriceRange([+priceFromQueryValue, +priceToQueryValue])
             setPartsManufacturersFromQuery(partsQueryValue)
           }, `${currentPage}${partsQuery}${priceQuery}`)
+          return
+        }
+
+        if (isValidPriceQuery) {
+          await updateParamsAndFiltersFromQuery(() => {
+            setIsFilterInQuery(true)
+            setIsPriceRangeChanged(true)
+            setPriceRange([+priceFromQueryValue, +priceToQueryValue])
+          }, `${currentPage}${priceQuery}`)
+          return
         }
 
         if (isValidBoilerQuery) {
@@ -111,6 +115,7 @@ const CatalogFilters = ({
             setIsFilterInQuery(true)
             setBoilerManufacturersFromQuery(boilerQueryValue)
           }, `${currentPage}${boilerQuery}`)
+          return
         }
 
         if (isValidPartsQuery) {
@@ -118,6 +123,7 @@ const CatalogFilters = ({
             setIsFilterInQuery(true)
             setPartsManufacturersFromQuery(partsQueryValue)
           }, `${currentPage}${partsQuery}`)
+          return
         }
       } catch (err) {
         const error = (err as Error).message
@@ -129,13 +135,7 @@ const CatalogFilters = ({
       }
     }
     applyFiltersFromQuery()
-  }, [
-    currentPage,
-    router,
-    setIsFilterInQuery,
-    setIsPriceRangeChanged,
-    setPriceRange,
-  ])
+  }, [])
 
   const applyFilters = async () => {
     setIsFilterInQuery(true)
@@ -173,6 +173,7 @@ const CatalogFilters = ({
           `${initialPage}${boilerQuery}${partsQuery}${priceQuery}`,
           router
         )
+        return
       }
 
       if (parts?.length && isPriceRangeChanged) {
@@ -186,6 +187,7 @@ const CatalogFilters = ({
           `${initialPage}${partsQuery}${priceQuery}`,
           router
         )
+        return
       }
 
       if (boiler?.length && isPriceRangeChanged) {
@@ -199,16 +201,8 @@ const CatalogFilters = ({
           `${initialPage}${boilerQuery}${priceQuery}`,
           router
         )
+        return
       }
-
-      if (isPriceRangeChanged) {
-        await updateParamsAndFilters(
-          { priceFrom, priceTo, offset: initialPage + 1 },
-          `${initialPage}${priceQuery}`,
-          router
-        )
-      }
-
       if (boiler?.length && parts?.length) {
         await updateParamsAndFilters(
           {
@@ -219,6 +213,16 @@ const CatalogFilters = ({
           `${initialPage}${boilerQuery}${partsQuery}`,
           router
         )
+        return
+      }
+
+      if (isPriceRangeChanged) {
+        await updateParamsAndFilters(
+          { priceFrom, priceTo, offset: initialPage + 1 },
+          `${initialPage}${priceQuery}`,
+          router
+        )
+        return
       }
 
       if (boiler?.length) {
@@ -227,6 +231,7 @@ const CatalogFilters = ({
           `${initialPage}${boilerQuery}`,
           router
         )
+        return
       }
 
       if (parts?.length) {

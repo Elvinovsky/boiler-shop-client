@@ -42,26 +42,20 @@ export const checkQueryParams = (router: NextRouter) => {
     'priceFrom',
     router
   ) as string
-
   const priceToQueryValue = getQueryParamOnFirstRender(
     'priceTo',
     router
   ) as string
-
   const boilerQueryValue = JSON.parse(
     decodeURIComponent(getQueryParamOnFirstRender('boiler', router) as string)
   )
-
   const partsQueryValue = JSON.parse(
     decodeURIComponent(getQueryParamOnFirstRender('parts', router) as string)
   )
-
   const isValidBoilerQuery =
     Array.isArray(boilerQueryValue) && !!boilerQueryValue?.length
-
   const isValidPartsQuery =
     Array.isArray(partsQueryValue) && !!partsQueryValue?.length
-
   const isValidPriceQuery =
     checkPriceFromQuery(+priceFromQueryValue) &&
     checkPriceFromQuery(+priceToQueryValue)
@@ -70,10 +64,10 @@ export const checkQueryParams = (router: NextRouter) => {
     isValidBoilerQuery,
     isValidPartsQuery,
     isValidPriceQuery,
-    priceToQueryValue,
     priceFromQueryValue,
-    partsQueryValue,
+    priceToQueryValue,
     boilerQueryValue,
+    partsQueryValue,
   }
 }
 

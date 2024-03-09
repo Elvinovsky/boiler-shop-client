@@ -117,7 +117,7 @@ const CatalogPage = ({ query }: { query: IQueryParams }) => {
     }
 
     loadBoilerParts()
-  }, [filteredBoilerParts, isFilterInQuery, isValidOffset, query, router])
+  }, [filteredBoilerParts, isFilterInQuery])
 
   const handlePageChange = async ({ selected }: { selected: number }) => {
     try {
